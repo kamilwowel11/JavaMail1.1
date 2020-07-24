@@ -17,7 +17,7 @@ public class JavaMail {
         properties.put("mail.smtp.socketFactory.fallback", "false");
 
         String accountEmail = "kamil.rogowski.test@gmail.com"; // <-- Your mail
-        String password ="kamiltest"; // <-- Password to your mail
+        String password ="******"; // <-- Password to your mail
 
 
 
