@@ -22,15 +22,15 @@ public class WindowMain extends JFrame implements ActionListener {
     private String stringTopic;
     private String stringText;
     private String stringRecepient;
+    private final String defaultRecepient = "kamil.rogowski.test@gmail.com";
     private static final String regex = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$";
-
 
     public WindowMain() {
         labelTopic = new JLabel("Topic: ");
         labelText = new JLabel("Text: ");
         labelTo = new JLabel("To: ");
         textFieldTopic = new JTextField();
-        textFieldTo = new JTextField("kamil.rogowski.test@gmail.com");
+        textFieldTo = new JTextField(defaultRecepient);
         proba1 = new JFormattedTextField();
         textPaneText = new JTextPane();
         textFieldText = new JTextField();
@@ -45,28 +45,26 @@ public class WindowMain extends JFrame implements ActionListener {
         textFieldTo.setBounds(60,10,400,25);
         //JTextPane
         textPaneText.setBounds(10,130,450,250);
-        textPaneText.setContentType("text/html");
         textPaneText.getDocument().putProperty(DefaultEditorKit.EndOfLineStringProperty, "\n");
         //JButton
         buttonConfirm.setBounds(175,400,125,30);
         buttonConfirm.setText("Send Mail");
         buttonConfirm.addActionListener(this);
 
-
         //input focus
         SwingUtilities.invokeLater(() -> {
             textFieldText.requestFocusInWindow();
             textPaneText.requestFocusInWindow();
             textPaneText.setCaretPosition(0);
+            textFieldTo.setCaretPosition(defaultRecepient.length());
         });
-
-
 
         //JFrame
         setSize(500,500);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setTitle("Sending Mail");
         setResizable(false);
+        setLocationRelativeTo(null);
         add(buttonConfirm);
         add(labelTopic);
         add(labelText);
@@ -92,12 +90,6 @@ public class WindowMain extends JFrame implements ActionListener {
             {
                 JOptionPane.showMessageDialog(null, "Invalid mail ! \n Try again." );
             }
-
-
-
         }
-
-
-
     }
 }
