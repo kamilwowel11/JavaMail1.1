@@ -85,6 +85,7 @@ public class WindowMain extends JFrame implements ActionListener {
             {
                 JOptionPane.showMessageDialog(null, "Topic: \n" + stringTopic+ "\n" + "Text : \n" + stringText);
                 JavaMail.sendMail(stringRecepient,stringTopic,stringText);
+                JOptionPane.showMessageDialog(null, "Message Send !");
             }
             else
             {
