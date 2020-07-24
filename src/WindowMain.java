@@ -1,8 +1,10 @@
 import javax.swing.*;
 import javax.swing.text.DefaultEditorKit;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
-public class WindowMain extends JFrame{
+public class WindowMain extends JFrame implements ActionListener {
     private static JLabel labelTopic;
     private static JLabel labelText;
     private static JTextField textFieldTopic;
@@ -10,6 +12,9 @@ public class WindowMain extends JFrame{
     private static JButton buttonConfirm;
     private static JFormattedTextField proba1;
     private static JTextPane textPaneText;
+    private String stringTopic;
+    private String stringText;
+
 
     public WindowMain() {
         labelTopic = new JLabel("Topic: ");
@@ -32,6 +37,7 @@ public class WindowMain extends JFrame{
         //JButton
         buttonConfirm.setBounds(175,400,125,30);
         buttonConfirm.setText("Send Mail");
+        buttonConfirm.addActionListener(this);
 
 
         //input focus
@@ -44,15 +50,29 @@ public class WindowMain extends JFrame{
             }
         });
 
+
+
         //JFrame
         setSize(500,500);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setTitle("Sending Mail");
         setResizable(false);
+        add(buttonConfirm);
         add(labelTopic);
         add(labelText);
         add(textFieldTopic);
         add(textPaneText);
-        add(buttonConfirm);
+
+    }
+    public void  actionPerformed(ActionEvent e){
+        if (e.getSource() == buttonConfirm){
+            stringTopic = textFieldTopic.getText();
+            stringText = textPaneText.getText();
+            JOptionPane.showMessageDialog(null, "Topic: \n" + stringTopic + "Text : \n" + stringText);
+            JavaMail.sendMail("kamil.rogowski.test@gmail.com",stringTopic,stringText);
+        }
+
+
+
     }
 }

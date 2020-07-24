@@ -4,7 +4,7 @@ import javax.mail.internet.MimeMessage;
 import java.util.Properties;
 
 public class JavaMail {
-    public static void sendMail(String recepient){
+    public static void sendMail(String recepient, String topic, String text){
         System.out.println("Preparing to send e-mail");
         Properties properties = new Properties();
         properties.put("mail.smtp.auth","true");
@@ -27,7 +27,7 @@ public class JavaMail {
             }
         });
 
-        Message message = prepareMessage(session,accountEmail,recepient);
+        Message message = prepareMessage(session,accountEmail,recepient,topic,text);
 
         try {
             Transport.send(message);
@@ -37,13 +37,13 @@ public class JavaMail {
         System.out.println("Message sent successfully");
 
     }
-    private static Message prepareMessage(Session session, String accountEmail,String recepient) {
+    private static Message prepareMessage(Session session, String accountEmail,String recepient, String topic, String text) {
         try {
             Message message = new MimeMessage(session);
             message.setFrom(new InternetAddress(accountEmail));
             message.setRecipient(Message.RecipientType.TO, new InternetAddress(recepient));
-            message.setSubject("here is topic");
-            message.setText("Here is text inside e-mail");
+            message.setSubject(topic);
+            message.setContent(text,"text/html");
             return message;
         } catch (MessagingException e) {
             e.printStackTrace();
