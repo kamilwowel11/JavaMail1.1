@@ -1,37 +1,50 @@
+import javax.mail.SendFailedException;
 import javax.swing.*;
 import javax.swing.text.DefaultEditorKit;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+
 
 public class WindowMain extends JFrame implements ActionListener {
     private static JLabel labelTopic;
     private static JLabel labelText;
+    private static JLabel labelTo;
     private static JTextField textFieldTopic;
+    private static JTextField textFieldTo;
     private static JTextField textFieldText;
     private static JButton buttonConfirm;
     private static JFormattedTextField proba1;
     private static JTextPane textPaneText;
     private String stringTopic;
     private String stringText;
+    private String stringRecepient;
+    private static final String regex = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$";
 
 
     public WindowMain() {
         labelTopic = new JLabel("Topic: ");
         labelText = new JLabel("Text: ");
+        labelTo = new JLabel("To: ");
         textFieldTopic = new JTextField();
+        textFieldTo = new JTextField("kamil.rogowski.test@gmail.com");
         proba1 = new JFormattedTextField();
         textPaneText = new JTextPane();
         textFieldText = new JTextField();
         buttonConfirm = new JButton();
         setLayout(null);
         //JLabels
-        labelTopic.setBounds(10,10,100,25);
-        labelText.setBounds(10,70,100,25);
+        labelTopic.setBounds(10,40,100,25);
+        labelText.setBounds(10,100,100,25);
+        labelTo.setBounds(10,10,100,25);
         //JTextField
-        textFieldTopic.setBounds(10,40,450,25);
+        textFieldTopic.setBounds(10,70,450,25);
+        textFieldTo.setBounds(60,10,400,25);
         //JTextPane
-        textPaneText.setBounds(10,100,450,250);
+        textPaneText.setBounds(10,130,450,250);
         textPaneText.setContentType("text/html");
         textPaneText.getDocument().putProperty(DefaultEditorKit.EndOfLineStringProperty, "\n");
         //JButton
@@ -41,13 +54,10 @@ public class WindowMain extends JFrame implements ActionListener {
 
 
         //input focus
-        SwingUtilities.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                textFieldText.requestFocusInWindow();
-                textPaneText.requestFocusInWindow();
-                textPaneText.setCaretPosition(0);
-            }
+        SwingUtilities.invokeLater(() -> {
+            textFieldText.requestFocusInWindow();
+            textPaneText.requestFocusInWindow();
+            textPaneText.setCaretPosition(0);
         });
 
 
@@ -60,6 +70,8 @@ public class WindowMain extends JFrame implements ActionListener {
         add(buttonConfirm);
         add(labelTopic);
         add(labelText);
+        add(labelTo);
+        add(textFieldTo);
         add(textFieldTopic);
         add(textPaneText);
 
@@ -68,8 +80,21 @@ public class WindowMain extends JFrame implements ActionListener {
         if (e.getSource() == buttonConfirm){
             stringTopic = textFieldTopic.getText();
             stringText = textPaneText.getText();
-            JOptionPane.showMessageDialog(null, "Topic: \n" + stringTopic + "Text : \n" + stringText);
-            JavaMail.sendMail("kamil.rogowski.test@gmail.com",stringTopic,stringText);
+            stringRecepient = textFieldTo.getText();
+            Pattern pattern = Pattern.compile(regex);
+            Matcher matcher = pattern.matcher(stringRecepient);
+            if (matcher.matches())
+            {
+                JOptionPane.showMessageDialog(null, "Topic: \n" + stringTopic+ "\n" + "Text : \n" + stringText);
+                JavaMail.sendMail(stringRecepient,stringTopic,stringText);
+            }
+            else
+            {
+                JOptionPane.showMessageDialog(null, "Invalid mail ! \n Try again." );
+            }
+
+
+
         }
 
 
